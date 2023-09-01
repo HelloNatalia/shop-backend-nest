@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { SigninAuthCredentialsDto } from './dto/signin-auth-credentials.dto copy';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
+import { Role } from './role.enum';
 
 @Injectable()
 export class AuthService {
@@ -38,6 +39,7 @@ export class AuthService {
       name,
       surname,
       email,
+      roles: [Role.Client],
     });
 
     try {
