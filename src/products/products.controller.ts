@@ -7,6 +7,7 @@ import {
   Query,
   Delete,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -16,6 +17,7 @@ import { Roles } from 'src/auth/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -41,5 +43,15 @@ export class ProductsController {
   @Roles(Role.Admin)
   deleteProduct(@Param('id') id: string): Promise<void> {
     return this.productsService.deleteProduct(id);
+  }
+
+  @Patch(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Role.Admin)
+  updateProduct(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
+    return this.productsService.updateProduct(id, updateProductDto);
   }
 }

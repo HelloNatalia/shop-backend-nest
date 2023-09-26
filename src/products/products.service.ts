@@ -8,6 +8,7 @@ import { Product } from './product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -77,5 +78,27 @@ export class ProductsService {
     if (result.affected == 0) {
       throw new NotFoundException(`Product with ID "${id}" not found`);
     }
+  }
+
+  async updateProduct(
+    id: string,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
+    const product = await this.productsRepository.findOneBy({ id: id });
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID "${id}" not found`);
+    }
+    console.log(product);
+
+    const { name, description, price, img } = updateProductDto;
+    if (name) product.name = name;
+    if (description) product.description = description;
+    if (price) product.price = price;
+    if (img) product.img = img;
+
+    await this.productsRepository.save(product);
+
+    return product;
   }
 }
