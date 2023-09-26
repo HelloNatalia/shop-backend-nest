@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './product.entity';
 import { Repository } from 'typeorm';
@@ -64,6 +68,14 @@ export class ProductsService {
       // logger
       console.log(error.message);
       throw new InternalServerErrorException('Something went wrong');
+    }
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    const result = await this.productsRepository.delete(id);
+
+    if (result.affected == 0) {
+      throw new NotFoundException(`Product with ID "${id}" not found`);
     }
   }
 }

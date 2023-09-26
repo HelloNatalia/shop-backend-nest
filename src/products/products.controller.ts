@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, UseGuards, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Query,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './product.entity';
@@ -13,6 +22,7 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Post('create')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(Role.Admin)
   @UseGuards(AuthGuard(), RolesGuard)
   createProduct(@Body() createProductDto: CreateProductDto): Promise<Product> {
@@ -24,5 +34,12 @@ export class ProductsController {
     @Query() getProductsFilterDto: GetProductsFilterDto,
   ): Promise<Product[]> {
     return this.productsService.getProducts(getProductsFilterDto);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Role.Admin)
+  deleteProduct(@Param('id') id: string): Promise<void> {
+    return this.productsService.deleteProduct(id);
   }
 }
