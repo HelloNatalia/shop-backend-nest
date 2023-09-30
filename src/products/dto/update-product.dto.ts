@@ -1,4 +1,10 @@
-import { IsDecimal, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsDecimal,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Length,
+} from 'class-validator';
 
 export class UpdateProductDto {
   @IsOptional()
@@ -20,4 +26,8 @@ export class UpdateProductDto {
   @IsString()
   @Length(3, 100)
   img: string;
+
+  @IsOptional()
+  @IsUUID()
+  categoryId: string;
 }
