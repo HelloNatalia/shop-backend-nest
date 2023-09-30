@@ -1,5 +1,6 @@
 import { Min } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from 'src/categories/category.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Product {
@@ -15,8 +16,8 @@ export class Product {
   @Column()
   price: string;
 
-  // @Column()
-  // category: string;
+  @ManyToOne(() => Category, (category) => category.products, { eager: true })
+  category: Category;
 
   @Column()
   img: string;

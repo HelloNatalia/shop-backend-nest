@@ -1,4 +1,4 @@
-import { IsDecimal, IsString, Length, Min } from 'class-validator';
+import { IsDecimal, IsString, IsUUID, Length, Min } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -16,4 +16,7 @@ export class CreateProductDto {
   @IsString()
   @Length(3, 100)
   img: string;
+
+  @IsUUID()
+  categoryId: string;
 }
