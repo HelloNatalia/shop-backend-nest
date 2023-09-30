@@ -1,4 +1,4 @@
-import { IsDecimal, IsOptional, IsString } from 'class-validator';
+import { IsDecimal, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class GetProductsFilterDto {
   @IsOptional()
@@ -12,4 +12,8 @@ export class GetProductsFilterDto {
   @IsOptional()
   @IsDecimal({ decimal_digits: '2', force_decimal: true })
   price_to?: string;
+
+  @IsOptional()
+  @IsUUID()
+  categoryId: string;
 }

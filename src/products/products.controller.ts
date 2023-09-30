@@ -26,7 +26,6 @@ export class ProductsController {
   @Post('create')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard(), RolesGuard)
   createProduct(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return this.productsService.createProduct(createProductDto);
   }
