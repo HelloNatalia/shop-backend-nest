@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './category.entity';
 import { Repository } from 'typeorm';
@@ -28,5 +32,13 @@ export class CategoriesService {
       throw new InternalServerErrorException('Something went wrong');
     }
     return category;
+  }
+
+  async deleteCategory(id: string): Promise<void> {
+    const result = await this.categoriesRepository.delete(id);
+
+    if (result.affected == 0) {
+      throw new NotFoundException(`Category with ID "${id}" not found`);
+    }
   }
 }
