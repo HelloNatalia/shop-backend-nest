@@ -31,6 +31,11 @@ export class ProductsController {
     return this.productsService.createProduct(createProductDto);
   }
 
+  @Get(':id')
+  getProduct(@Param('id') id: string): Promise<Product> {
+    return this.productsService.getProduct(id);
+  }
+
   @Get()
   getProducts(
     @Query() getProductsFilterDto: GetProductsFilterDto,

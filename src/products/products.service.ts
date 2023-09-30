@@ -37,6 +37,16 @@ export class ProductsService {
     return product;
   }
 
+  async getProduct(id: string): Promise<Product> {
+    const product = await this.productsRepository.findOneBy({ id: id });
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID "${id}" not found`);
+    }
+
+    return product;
+  }
+
   async getProducts(
     getProductsFilterDto: GetProductsFilterDto,
   ): Promise<Product[]> {
