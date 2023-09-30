@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from './role.enum';
 import { Cart } from 'src/cart/cart.entity';
+import { Address } from 'src/addresses/address.entity';
 
 @Entity()
 export class User {
@@ -32,4 +33,7 @@ export class User {
 
   @OneToMany(() => Cart, (cart) => cart.user, { eager: true })
   cart: Cart;
+
+  @OneToMany(() => Address, (address) => address.user)
+  address: Address;
 }
