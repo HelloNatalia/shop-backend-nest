@@ -4,8 +4,8 @@ export class CartAddDto {
   @IsUUID()
   productId: string;
 
-  //   @IsInt()
-  //   @Min(1)
-  //   @Max(99)
-  quantity: string;
+  @IsInt()
+  @Min(1)
+  @Max(99)
+  quantity: number;
 }

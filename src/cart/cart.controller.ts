@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
@@ -7,6 +14,8 @@ import { Role } from 'src/auth/role.enum';
 import { CartAddDto } from './dto/cart-add.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
+import { CartUpdateDto } from './dto/cart-update.dto';
+import { Cart } from './cart.entity';
 
 @Controller('cart')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -20,5 +29,13 @@ export class CartController {
     @GetUser() user: User,
   ): Promise<void> {
     return this.cartService.addToCart(cartAddDto, user);
+  }
+
+  @Patch(':id')
+  updateCart(
+    @Param('id') id: number,
+    @Body() cartUpdateDto: CartUpdateDto,
+  ): Promise<Cart> {
+    return this.cartService.updateCart(id, cartUpdateDto);
   }
 }

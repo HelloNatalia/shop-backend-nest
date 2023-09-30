@@ -1,10 +1,15 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './cart.entity';
 import { CartAddDto } from './dto/cart-add.dto';
 import { User } from 'src/auth/user.entity';
 import { Product } from 'src/products/product.entity';
+import { CartUpdateDto } from './dto/cart-update.dto';
 
 @Injectable()
 export class CartService {
@@ -36,5 +41,20 @@ export class CartService {
       console.log(error.message);
       throw new InternalServerErrorException('Something went wrong');
     }
+  }
+
+  async updateCart(id: number, cartUpdateDto: CartUpdateDto): Promise<Cart> {
+    const { quantity } = cartUpdateDto;
+
+    const cart = await this.cartRepository.findOneBy({ id: id });
+    if (!cart) {
+      throw new NotFoundException(`Cart's element not found`);
+    }
+
+    cart.quantity = quantity;
+
+    await this.cartRepository.save(cart);
+
+    return cart;
   }
 }
