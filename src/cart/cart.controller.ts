@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -43,5 +44,10 @@ export class CartController {
     @Body() cartUpdateDto: CartUpdateDto,
   ): Promise<Cart> {
     return this.cartService.updateCart(id, cartUpdateDto);
+  }
+
+  @Delete(':id')
+  deleteProductInCart(@Param('id') id: number): Promise<void> {
+    return this.cartService.deleteProductInCart(id);
   }
 }

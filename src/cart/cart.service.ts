@@ -71,4 +71,14 @@ export class CartService {
 
     return cart;
   }
+
+  async deleteProductInCart(id: number): Promise<void> {
+    const result = await this.cartRepository.delete(id);
+
+    if (result.affected == 0) {
+      throw new NotFoundException(
+        `Selected product in cart has not been removed`,
+      );
+    }
+  }
 }
