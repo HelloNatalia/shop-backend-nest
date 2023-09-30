@@ -14,5 +14,5 @@ export class Cart {
   product: Product;
 
   @Column()
-  quantity: number;
+  quantity: string;
 }
