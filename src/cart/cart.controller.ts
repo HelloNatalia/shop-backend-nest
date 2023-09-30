@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -29,6 +30,11 @@ export class CartController {
     @GetUser() user: User,
   ): Promise<void> {
     return this.cartService.addToCart(cartAddDto, user);
+  }
+
+  @Get()
+  getProductsInCart(@GetUser() user: User): Promise<Cart[]> {
+    return this.cartService.getProductsInCart(user);
   }
 
   @Patch(':id')

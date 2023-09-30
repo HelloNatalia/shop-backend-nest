@@ -43,6 +43,20 @@ export class CartService {
     }
   }
 
+  async getProductsInCart(user: User): Promise<Cart[]> {
+    try {
+      const elements = await this.cartRepository
+        .createQueryBuilder('cart')
+        .innerJoinAndSelect('cart.product', 'product')
+        .where('cart.userId = :userId', { userId: user.id })
+        .getMany();
+
+      return elements;
+    } catch (error) {
+      throw new InternalServerErrorException('Something went wrong');
+    }
+  }
+
   async updateCart(id: number, cartUpdateDto: CartUpdateDto): Promise<Cart> {
     const { quantity } = cartUpdateDto;
 
