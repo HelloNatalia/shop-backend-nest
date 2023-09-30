@@ -41,4 +41,21 @@ export class CategoriesService {
       throw new NotFoundException(`Category with ID "${id}" not found`);
     }
   }
+
+  async updateCategory(
+    id: string,
+    categoryDto: CategoryDto,
+  ): Promise<Category> {
+    const category = await this.categoriesRepository.findOneBy({ id: id });
+
+    if (!category) {
+      throw new NotFoundException(`Category with ID "${id}" not found`);
+    }
+    const { name } = categoryDto;
+    category.name = name;
+
+    await this.categoriesRepository.save(category);
+
+    return category;
+  }
 }

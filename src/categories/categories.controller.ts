@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -34,5 +35,13 @@ export class CategoriesController {
   @Delete(':id')
   deleteCategory(@Param('id') id: string): Promise<void> {
     return this.categoriesService.deleteCategory(id);
+  }
+
+  @Patch(':id')
+  updateCategory(
+    @Param('id') id: string,
+    @Body() categoryDto: CategoryDto,
+  ): Promise<Category> {
+    return this.categoriesService.updateCategory(id, categoryDto);
   }
 }
