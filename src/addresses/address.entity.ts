@@ -25,7 +25,7 @@ export class Address {
   phone_code: number;
 
   @Column()
-  phone_number: number;
+  phone_number: string;
 
   @ManyToOne(() => User, (user) => user.address, { eager: true })
   user: User;
