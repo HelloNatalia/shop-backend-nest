@@ -1,5 +1,12 @@
 import { User } from 'src/auth/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Order } from 'src/orders/order.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Address {
@@ -29,4 +36,7 @@ export class Address {
 
   @ManyToOne(() => User, (user) => user.address, { eager: true })
   user: User;
+
+  @OneToMany(() => Order, (order) => order.address)
+  order: Order;
 }

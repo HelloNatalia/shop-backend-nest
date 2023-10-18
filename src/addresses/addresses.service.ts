@@ -43,8 +43,21 @@ export class AddressesService {
       user,
     });
 
+    const existingAddress = await this.addressRepository
+      .createQueryBuilder('address')
+      .where('address.street = :street', { street })
+      .andWhere('address.number = :number', { number })
+      .andWhere('address.postal_code = :postal_code', { postal_code })
+      .andWhere('address.city = :city', { city })
+      .andWhere('address.country = :country', { country })
+      .andWhere('address.phone_code = :phone_code', { phone_code })
+      .andWhere('address.phone_number = :phone_number', { phone_number })
+      .andWhere('address.user = :userId', { userId: user.id })
+      .getOne();
+    if (existingAddress) return existingAddress;
+
     try {
-      this.addressRepository.save(address);
+      await this.addressRepository.save(address);
       return address;
     } catch (error) {
       console.log(error.message);

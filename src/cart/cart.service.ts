@@ -29,17 +29,28 @@ export class CartService {
       throw new Error(`Product with id "${productId}" not found`);
     }
 
-    const cart = this.cartRepository.create({
-      quantity,
-      user,
-      product,
-    });
+    const existingCart = await this.cartRepository
+      .createQueryBuilder('cart')
+      .where('cart.userId = :userId', { userId: user.id })
+      .andWhere('cart.productId = :productId', { productId: product.id })
+      .getOne();
 
-    try {
-      await this.cartRepository.save(cart);
-    } catch (error) {
-      console.log(error.message);
-      throw new InternalServerErrorException('Something went wrong');
+    if (existingCart) {
+      existingCart.quantity += quantity;
+      await this.cartRepository.save(existingCart);
+    } else {
+      const cart = this.cartRepository.create({
+        quantity,
+        user,
+        product,
+      });
+
+      try {
+        await this.cartRepository.save(cart);
+      } catch (error) {
+        console.log(error.message);
+        throw new InternalServerErrorException('Something went wrong');
+      }
     }
   }
 
@@ -48,7 +59,9 @@ export class CartService {
       const elements = await this.cartRepository
         .createQueryBuilder('cart')
         .innerJoinAndSelect('cart.product', 'product')
+        .leftJoin('cart.order', 'order')
         .where('cart.userId = :userId', { userId: user.id })
+        .andWhere('(order.id IS NULL)')
         .getMany();
 
       return elements;

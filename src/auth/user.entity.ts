@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from './role.enum';
 import { Cart } from 'src/cart/cart.entity';
 import { Address } from 'src/addresses/address.entity';
+import { Order } from 'src/orders/order.entity';
 
 @Entity()
 export class User {
@@ -36,4 +37,7 @@ export class User {
 
   @OneToMany(() => Address, (address) => address.user)
   address: Address;
+
+  @OneToMany(() => Order, (order) => order.address)
+  order: Order;
 }
