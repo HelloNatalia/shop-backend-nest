@@ -6,6 +6,8 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { OrdersService } from './orders.service';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
+import { AddressOrderDto } from './dto/address-order.dto copy';
+import { Order } from './order.entity';
 
 @Controller('orders')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -19,5 +21,13 @@ export class OrdersController {
     @GetUser() user: User,
   ): Promise<any[]> {
     return this.ordersService.getOrderDetails(cartIds, user);
+  }
+
+  @Post('created-order')
+  createOrder(
+    @Body() addressOrder: AddressOrderDto,
+    @GetUser() user: User,
+  ): Promise<Order> {
+    return this.ordersService.createOrder(addressOrder, user);
   }
 }
