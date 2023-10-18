@@ -44,9 +44,7 @@ export class OrdersService {
       return [user, carts, addresses];
     } catch (error) {
       console.log(error.message);
-      throw new InternalServerErrorException(
-        `Something went wrong, try again.`,
-      );
+      throw new NotFoundException(`Product not found`);
     }
   }
 
