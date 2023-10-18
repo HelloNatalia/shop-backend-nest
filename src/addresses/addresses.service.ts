@@ -44,7 +44,7 @@ export class AddressesService {
     });
 
     try {
-      this.addressRepository.save(address);
+      await this.addressRepository.save(address);
       return address;
     } catch (error) {
       console.log(error.message);
