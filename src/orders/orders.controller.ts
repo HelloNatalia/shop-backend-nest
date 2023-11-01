@@ -36,8 +36,20 @@ export class OrdersController {
     return this.ordersService.getOrders(user);
   }
 
-  @Get(':id')
+  @Get('my-order/:id')
   getOrder(@GetUser() user: User, @Param('id') id: number): Promise<Order> {
     return this.ordersService.getOrder(user, id);
+  }
+
+  @Roles(Role.Admin)
+  @Get('admin')
+  getAllOrdersAdmin(): Promise<Order[]> {
+    return this.ordersService.getAllOrdersAdmin();
+  }
+
+  @Roles(Role.Admin)
+  @Get('admin/:id')
+  getOrderAdmin(@Param('id') id: number): Promise<Order> {
+    return this.ordersService.getOrderAdmin(id);
   }
 }

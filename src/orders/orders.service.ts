@@ -105,4 +105,28 @@ export class OrdersService {
     if (order) return order;
     else throw new NotFoundException(`Order with id ${id} not found`);
   }
+
+  async getAllOrdersAdmin(): Promise<Order[]> {
+    // const orders = await this.ordersRepository.find();
+    const orders = await this.ordersRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .leftJoinAndSelect('order.user', 'user')
+      .getMany();
+    return orders;
+  }
+
+  async getOrderAdmin(id: number): Promise<Order> {
+    const order = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.id = :id', { id: id })
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .leftJoinAndSelect('order.user', 'user')
+      .getOne();
+
+    if (order) return order;
+    else throw new NotFoundException(`Order with id ${id} not found`);
+  }
 }
