@@ -12,6 +12,7 @@ import { Address } from 'src/addresses/address.entity';
 import { AddressOrderDto } from './dto/address-order.dto copy';
 import { AddressesService } from 'src/addresses/addresses.service';
 import { AddressDto } from 'src/addresses/dto/address.dto';
+import { Status } from './status.enum';
 
 @Injectable()
 export class OrdersService {
@@ -81,5 +82,70 @@ export class OrdersService {
     }
 
     return order;
+  }
+
+  async getOrders(user: User): Promise<Order[]> {
+    const orders = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.user = :userId', { userId: user.id })
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .getMany();
+    return orders;
+  }
+
+  async getOrder(user: User, id: number): Promise<Order> {
+    const order = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.user = :userId', { userId: user.id })
+      .andWhere('order.id = :id', { id: id })
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .getOne();
+
+    if (order) return order;
+    else throw new NotFoundException(`Order with id ${id} not found`);
+  }
+
+  async getAllOrdersAdmin(): Promise<Order[]> {
+    // const orders = await this.ordersRepository.find();
+    const orders = await this.ordersRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .leftJoinAndSelect('order.user', 'user')
+      .getMany();
+    return orders;
+  }
+
+  async getOrderAdmin(id: number): Promise<Order> {
+    const order = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.id = :id', { id: id })
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .leftJoinAndSelect('order.user', 'user')
+      .getOne();
+
+    if (order) return order;
+    else throw new NotFoundException(`Order with id ${id} not found`);
+  }
+
+  async updateOrderStatus(status, id): Promise<Order> {
+    const order = await this.ordersRepository.findOneBy({ id: id });
+    let status_enum;
+    if (status == Status.FINISHED) status_enum = Status.FINISHED;
+    else if (status == Status.IN_PROGRESS) status_enum = Status.IN_PROGRESS;
+    else if (status == Status.SENT) status_enum = Status.SENT;
+    else throw new NotFoundException(`Inserted status: ${status} not found`);
+    if (order && typeof status_enum !== 'undefined') {
+      order.status = status_enum;
+      try {
+        await this.ordersRepository.save(order);
+        return order;
+      } catch (err) {
+        throw new InternalServerErrorException('Something went wrong');
+      }
+    }
   }
 }
