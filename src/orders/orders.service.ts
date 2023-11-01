@@ -92,4 +92,17 @@ export class OrdersService {
       .getMany();
     return orders;
   }
+
+  async getOrder(user: User, id: number): Promise<Order> {
+    const order = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.user = :userId', { userId: user.id })
+      .andWhere('order.id = :id', { id: id })
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .getOne();
+
+    if (order) return order;
+    else throw new NotFoundException(`Order with id ${id} not found`);
+  }
 }

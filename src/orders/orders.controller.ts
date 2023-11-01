@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/auth/role.enum';
 import { Roles } from 'src/auth/roles.decorator';
@@ -34,5 +34,10 @@ export class OrdersController {
   @Get('my-orders')
   getOrders(@GetUser() user: User): Promise<Order[]> {
     return this.ordersService.getOrders(user);
+  }
+
+  @Get(':id')
+  getOrder(@GetUser() user: User, @Param('id') id: number): Promise<Order> {
+    return this.ordersService.getOrder(user, id);
   }
 }
