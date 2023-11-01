@@ -82,4 +82,14 @@ export class OrdersService {
 
     return order;
   }
+
+  async getOrders(user: User): Promise<Order[]> {
+    const orders = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.user = :userId', { userId: user.id })
+      .leftJoinAndSelect('order.carts', 'carts')
+      .leftJoinAndSelect('carts.product', 'product')
+      .getMany();
+    return orders;
+  }
 }

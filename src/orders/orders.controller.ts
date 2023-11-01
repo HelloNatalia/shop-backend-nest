@@ -30,4 +30,9 @@ export class OrdersController {
   ): Promise<Order> {
     return this.ordersService.createOrder(addressOrder, user);
   }
+
+  @Get('my-orders')
+  getOrders(@GetUser() user: User): Promise<Order[]> {
+    return this.ordersService.getOrders(user);
+  }
 }
