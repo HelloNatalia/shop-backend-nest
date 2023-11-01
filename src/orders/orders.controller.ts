@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/auth/role.enum';
 import { Roles } from 'src/auth/roles.decorator';
@@ -8,6 +16,7 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { AddressOrderDto } from './dto/address-order.dto copy';
 import { Order } from './order.entity';
+import { Status } from './status.enum';
 
 @Controller('orders')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -51,5 +60,14 @@ export class OrdersController {
   @Get('admin/:id')
   getOrderAdmin(@Param('id') id: number): Promise<Order> {
     return this.ordersService.getOrderAdmin(id);
+  }
+
+  @Roles(Role.Admin)
+  @Patch('admin/:id')
+  updateOrderStatus(
+    @Body('status') status: string,
+    @Param('id') id: number,
+  ): Promise<Order> {
+    return this.ordersService.updateOrderStatus(status, id);
   }
 }
