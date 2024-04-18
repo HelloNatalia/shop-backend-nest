@@ -46,8 +46,34 @@ Module with products to sell in the shop.
 - GET /products/ - getting products with filters:
   - search - text to search by name and description
   - price_from
-  - proce_to
+  - price_to
   - categoryId - products' category
 - GET /products/:id - getting specific product
 - PATCH /products/:id - updating specific product
 - DELETE /products/:id - deleting specific product
+
+<br>
+
+### Cart
+
+Cart module, where products in users' carts are managed.
+
+- POST /cart - adding product to cart
+- GET /cart - getting users' products in the cart
+- PATCH /cart/:id - changing the quantity of one product in the cart
+- DELETE /cart/:id - deleting product from the cart
+
+<br>
+
+### Orders
+
+Module for creating and managing orders.
+
+- POST /orders/order-details - returning order details, in request body list of carts' Ids is sent
+- POST /orders/create-order - creating order
+- GET /orders/my-orders - getting all users' orders
+- GET /orders/my-order/:id - getting specific users' order
+- GET /orders/admin - getting all orders
+- GET /orders/admin/:id - getting specific order
+- PATCH /orders/admin/:id - changing order status (in progress, sent, finished)
+
