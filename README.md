@@ -56,7 +56,7 @@ Module with products to sell in the shop.
 
 ### Cart
 
-Cart module, where products in users' carts are managed.
+Cart module, where products in the user's cart are managed.
 
 - POST /cart - adding product to cart
 - GET /cart - getting users' products in the cart
@@ -72,7 +72,7 @@ Module for creating and managing orders.
 - POST /orders/order-details - returning order details, in request body list of carts' IDs is sent
 - POST /orders/create-order - creating order
 - GET /orders/my-orders - getting all users' orders
-- GET /orders/my-order/:id - getting specific users' order
+- GET /orders/my-order/:id - getting specific user's order
 - GET /orders/admin - getting all orders
 - GET /orders/admin/:id - getting specific order
 - PATCH /orders/admin/:id - changing order status (in progress, sent, finished)
