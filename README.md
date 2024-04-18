@@ -9,7 +9,7 @@
 
 ### Auth
 
-Users module, where RolesGuars and getUser decorator are declared.
+Users module, where RolesGuards and getUser decorator are declared.
 
 - POST /auth/signup - signing up
 - POST /auth/signin - signing in, returns accessToken
