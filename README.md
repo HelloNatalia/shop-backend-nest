@@ -1,6 +1,6 @@
 # 🛒 Shop API
 
-**API for a shop built in the Nest framework**
+**API for a shop built in the Nest.js framework**
 
 <br>
 
@@ -61,7 +61,7 @@ Cart module, where products in users' carts are managed.
 - POST /cart - adding product to cart
 - GET /cart - getting users' products in the cart
 - PATCH /cart/:id - changing the quantity of one product in the cart
-- DELETE /cart/:id - deleting product from the cart
+- DELETE /cart/:id - deleting a product from the cart
 
 <br>
 
@@ -69,7 +69,7 @@ Cart module, where products in users' carts are managed.
 
 Module for creating and managing orders.
 
-- POST /orders/order-details - returning order details, in request body list of carts' Ids is sent
+- POST /orders/order-details - returning order details, in request body list of carts' IDs is sent
 - POST /orders/create-order - creating order
 - GET /orders/my-orders - getting all users' orders
 - GET /orders/my-order/:id - getting specific users' order
@@ -77,3 +77,27 @@ Module for creating and managing orders.
 - GET /orders/admin/:id - getting specific order
 - PATCH /orders/admin/:id - changing order status (in progress, sent, finished)
 
+<br>
+
+## 💻 Used technologies
+
+API:
+- Nest.js framework
+- TypeScript
+
+Database:
+- PostgreSQL
+- PgAdmin
+
+DevOps tool:
+- Docker
+
+API testing tool:
+- Postman
+
+
+<br>
+
+## 😎 What have I learned?
+
+This is the first Nest.js API application that I've developed independently. I've been developing my skills in this framework during this project, and I've become more familiar with it.
